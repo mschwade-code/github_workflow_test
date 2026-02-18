@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - "1.12.5"
+        os: ubuntu-latest
+        arch: x64
+    steps:
+    - uses: actions/checkout@v6
+    - name: Set up Julia ${{ matrix.version }}
+      uses: julia-actions/setup-julia@v2
+      with:
+        version: ${{ matrix.version }}
+        arch: ${{ matrix.arch }}
+
+    - name: Build pkg
+      uses: julia-actions/julia-buildpkg@latest
+
+    - name: Run test
+      uses: julia-actions/julia-runtest@latest
