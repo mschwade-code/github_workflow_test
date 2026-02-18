@@ -47,6 +47,8 @@ jobs:
 
       # 5️⃣ Get merged PRs since last tag
       - name: Get merged PRs
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           PRS=$(gh pr list \
             --state merged \
@@ -57,6 +59,7 @@ jobs:
           echo "PRS=$PRS" >> $GITHUB_ENV
           echo "Merged PRs since last tag:"
           echo "$PRS"
+
 
       # 6️⃣ Count labels
       - name: Count PR labels
